@@ -19,8 +19,8 @@ pipeline {
             // Use bat instead of sh on Windows
             bat "docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%"
             bat "docker-compose build web"
-            def imageTag = "${DOCKER_REGISTRY}/my-nodejs-app:${env.BUILD_NUMBER}"
-            bat "docker tag my-nodejs-app:latest ${imageTag}"
+            def imageTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER}"
+            bat "docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${imageTag}"
             bat "docker push ${imageTag}"
           }
         }
