@@ -18,7 +18,7 @@ pipeline {
       steps {
         script {
           withCredentials([usernamePassword(
-            credentialsId: 'docker-hub-creds',
+            credentialsId: 'github-cred',
             usernameVariable: 'DOCKER_USERNAME',
             passwordVariable: 'DOCKER_PASSWORD')]) {
 
