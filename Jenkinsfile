@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_REGISTRY = 'preetisahani123' // change this if your Docker Hub username is different
+    DOCKER_REGISTRY = 'preeti32sahani' // change this if your Docker Hub username is different
     IMAGE_NAME = 'my-nodejs-app'
   }
 
@@ -21,14 +21,12 @@ pipeline {
             credentialsId: 'docker-hub-creds',
             usernameVariable: 'DOCKER_USERNAME',
             passwordVariable: 'DOCKER_PASSWORD')]) {
-
-            // More secure Docker login
+            
             bat """
-@echo off
-echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
-"""
-
-
+            @echo off
+            echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+            """
+          }
             // Build the Docker image
             bat "docker-compose build web"
 
