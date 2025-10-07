@@ -37,12 +37,13 @@ pipeline {
 
     stage('Deploy Multi-Container App') {
       steps {
-        script {
-          bat """
-            docker stop node-web node-mongo-db || exit 0
-            docker rm node-web node-mongo-db || exit 0
-            set BUILD_NUMBER=${env.BUILD_NUMBER} && docker-compose up -d --force-recreate
-          """
+       script {
+          // Stop and remove old containers
+          bat "docker stop node-web node-mongo-db || exit 0"
+          bat "docker rm node-web node-mongo-db || exit 0"
+
+          // Recreate containers
+          bat "docker-compose up -d --force-recreate"
         }
       }
     }
