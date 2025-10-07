@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_REGISTRY = 'preeti32sahani' // change this if your Docker Hub username is different
+    DOCKER_REGISTRY = 'preeti32sahani'
     IMAGE_NAME = 'my-nodejs-app'
   }
 
@@ -21,20 +21,20 @@ pipeline {
             credentialsId: 'docker-hub-creds',
             usernameVariable: 'DOCKER_USERNAME',
             passwordVariable: 'DOCKER_PASSWORD')]) {
-            
+
             bat """
             @echo off
             echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
             """
           }
-            // Build the Docker image
-            bat "docker-compose build web"
 
-            // Tag and push image
-            def imageTag = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_NUMBER}"
-            bat "docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${imageTag}"
-            bat "docker push ${imageTag}"
-          }
+          // Build the Docker image
+          bat "docker-compose build web"
+
+          // Tag and push image
+          def imageTag = "${env.DOCKER_REGISTRY}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}"
+          bat "docker tag ${env.IMAGE_NAME}:${env.BUILD_NUMBER} ${imageTag}"
+          bat "docker push ${imageTag}"
         }
       }
     }
