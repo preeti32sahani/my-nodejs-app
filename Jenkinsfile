@@ -27,12 +27,10 @@ pipeline {
       }
     }
 
-    stage('Deploy Multi-Container App') {
-      steps {
-        script {
-          bat "docker stop node-web node-mongo-db || exit 0"
-          bat "docker rm node-web node-mongo-db || exit 0"
-          bat "set BUILD_NUMBER=${env.BUILD_NUMBER} && docker-compose up -d --force-recreate"
+   stage('Deploy Multi-Container App') {
+            steps {
+                echo 'Deploying the app using docker-compose...'
+                bat 'docker-compose up -d'
         }
       }
     }
