@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_REGISTRY = 'preeti32sahani'
+    DOCKER_REGISTRY = 'preetisahani123'
     IMAGE_NAME = 'my-nodejs-app'
   }
 
@@ -22,19 +22,15 @@ pipeline {
             usernameVariable: 'DOCKER_USERNAME',
             passwordVariable: 'DOCKER_PASSWORD')]) {
 
-            bat """
-            @echo off
-            echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
-            """
+            // Use a cmd-friendly login form on Windows agents
+            bat "docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%"
           }
 
-          // Build the Docker image
-          bat "docker-compose build web"
+          // Build explicitly so we can tag correctly
+          bat "docker build -t ${env.DOCKER_REGISTRY}/${env.IMAGE_NAME}:${env.BUILD_NUMBER} ."
 
-          // Tag and push image
-          def imageTag = "${env.DOCKER_REGISTRY}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}"
-          bat "docker tag ${env.IMAGE_NAME}:${env.BUILD_NUMBER} ${imageTag}"
-          bat "docker push ${imageTag}"
+          // Push the built image
+          bat "docker push ${env.DOCKER_REGISTRY}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}"
         }
       }
     }
