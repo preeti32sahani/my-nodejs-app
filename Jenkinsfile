@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_REGISTRY = 'bunny011' // change this if your Docker Hub username is different
+    DOCKER_REGISTRY = 'preetisahani123' // change this if your Docker Hub username is different
     IMAGE_NAME = 'my-nodejs-app'
   }
 
@@ -10,7 +10,7 @@ pipeline {
 
     stage('Checkout Source') {
       steps {
-        git url: 'https://github.com/loyalbunny/my-nodejs-app.git', branch: 'main'
+        git url: 'https://github.com/preeti32sahani/my-nodejs-app.git', branch: 'main'
       }
     }
 
